@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://dojmkjno3wsog"]
+
+[ext_resource type="PackedScene" uid="uid://dsxhs34uk8mqf" path="res://prefabs/player/presets/Raycasts.tscn" id="1_jv2jv"]
+[ext_resource type="Script" path="res://scripts/CameraFocus.gd" id="2_1h3dd"]
+
+[node name="PlayerPrefabs" type="Node2D"]
+
+[node name="Raycasts" parent="." instance=ExtResource("1_jv2jv")]
+
+[node name="MoveDelta" type="Node2D" parent="."]
+
+[node name="GrabPosition" type="Node2D" parent="."]
+position = Vector2(32, -16)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+scale = Vector2(0.985768, 0.994047)
+enabled = false
+script = ExtResource("2_1h3dd")

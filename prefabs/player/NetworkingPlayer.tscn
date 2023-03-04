@@ -1,0 +1,144 @@
+[gd_scene load_steps=5 format=3 uid="uid://bvjkm73f6ppyl"]
+
+[ext_resource type="Script" path="res://scripts/multiplayer/CharacterSpawner.gd" id="1_4e155"]
+[ext_resource type="Script" path="res://scripts/multiplayer/NetworkState.gd" id="2_yycdt"]
+[ext_resource type="Theme" uid="uid://dbhegub0favr1" path="res://new_theme.tres" id="3_pxjkj"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_khri6"]
+properties/0/path = NodePath("NetworkState:damage")
+properties/0/spawn = true
+properties/0/sync = true
+properties/1/path = NodePath("NetworkState:i_frames")
+properties/1/spawn = true
+properties/1/sync = true
+properties/2/path = NodePath("NetworkState:dash_frames")
+properties/2/spawn = true
+properties/2/sync = true
+properties/3/path = NodePath("NetworkState:stun_frames")
+properties/3/spawn = true
+properties/3/sync = true
+properties/4/path = NodePath("NetworkState:flipped")
+properties/4/spawn = true
+properties/4/sync = true
+properties/5/path = NodePath("NetworkState:grabbed")
+properties/5/spawn = true
+properties/5/sync = true
+properties/6/path = NodePath("NetworkState:grabbing")
+properties/6/spawn = true
+properties/6/sync = true
+properties/7/path = NodePath("NetworkState:double_jumped")
+properties/7/spawn = true
+properties/7/sync = true
+properties/8/path = NodePath("NetworkState:wall_check")
+properties/8/spawn = true
+properties/8/sync = true
+properties/9/path = NodePath("NetworkState:ATTACK")
+properties/9/spawn = true
+properties/9/sync = true
+properties/10/path = NodePath("NetworkState:SPECIAL")
+properties/10/spawn = true
+properties/10/sync = true
+properties/11/path = NodePath("NetworkState:SHIELD")
+properties/11/spawn = true
+properties/11/sync = true
+properties/12/path = NodePath("NetworkState:DASH")
+properties/12/spawn = true
+properties/12/sync = true
+properties/13/path = NodePath("NetworkState:UP")
+properties/13/spawn = true
+properties/13/sync = true
+properties/14/path = NodePath("NetworkState:JUMP")
+properties/14/spawn = true
+properties/14/sync = true
+properties/15/path = NodePath("NetworkState:DOWN")
+properties/15/spawn = true
+properties/15/sync = true
+properties/16/path = NodePath("NetworkState:RIGHT")
+properties/16/spawn = true
+properties/16/sync = true
+properties/17/path = NodePath("NetworkState:LEFT")
+properties/17/spawn = true
+properties/17/sync = true
+properties/18/path = NodePath("NetworkState:JUST_RIGHT")
+properties/18/spawn = true
+properties/18/sync = true
+properties/19/path = NodePath("NetworkState:JUST_LEFT")
+properties/19/spawn = true
+properties/19/sync = true
+properties/20/path = NodePath("NetworkState:damage_owner")
+properties/20/spawn = true
+properties/20/sync = true
+properties/21/path = NodePath("NetworkState:death_frames")
+properties/21/spawn = true
+properties/21/sync = true
+properties/22/path = NodePath("NetworkState:kills")
+properties/22/spawn = true
+properties/22/sync = true
+properties/23/path = NodePath("NetworkState:deaths")
+properties/23/spawn = true
+properties/23/sync = true
+properties/24/path = NodePath("NetworkState:type")
+properties/24/spawn = true
+properties/24/sync = true
+properties/25/path = NodePath("NetworkState:username")
+properties/25/spawn = true
+properties/25/sync = true
+properties/26/path = NodePath("NetworkState:player_position")
+properties/26/spawn = true
+properties/26/sync = true
+properties/27/path = NodePath("NetworkState:damage_given")
+properties/27/spawn = true
+properties/27/sync = true
+properties/28/path = NodePath("NetworkState:damage_taken")
+properties/28/spawn = true
+properties/28/sync = true
+properties/29/path = NodePath("NetworkState:charge_frames")
+properties/29/spawn = true
+properties/29/sync = true
+properties/30/path = NodePath("NetworkState:GRAB")
+properties/30/spawn = true
+properties/30/sync = true
+properties/31/path = NodePath("NetworkState:DIRECTIONAL_ONLY")
+properties/31/spawn = true
+properties/31/sync = true
+properties/32/path = NodePath("NetworkState:STRONG")
+properties/32/spawn = true
+properties/32/sync = true
+properties/33/path = NodePath("NetworkState:STRONG_RELEASE")
+properties/33/spawn = true
+properties/33/sync = true
+properties/34/path = NodePath("NetworkState:saved_charge")
+properties/34/spawn = true
+properties/34/sync = true
+properties/35/path = NodePath("NetworkState:GRAB_RELEASE")
+properties/35/spawn = true
+properties/35/sync = true
+properties/36/path = NodePath("NetworkState:SPECIAL_RELEASE")
+properties/36/spawn = true
+properties/36/sync = true
+
+[node name="Network" type="Node2D"]
+script = ExtResource("1_4e155")
+
+[node name="NetworkState" type="Node2D" parent="."]
+script = ExtResource("2_yycdt")
+
+[node name="Name" type="Label" parent="NetworkState"]
+texture_filter = 1
+texture_repeat = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -11.0
+offset_top = -151.0
+offset_right = 13.0
+offset_bottom = -130.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("3_pxjkj")
+theme_type_variation = &"HeaderSmall"
+text = "2%"
+horizontal_alignment = 1
+
+[node name="1" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_khri6")

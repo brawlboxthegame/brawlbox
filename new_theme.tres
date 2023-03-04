@@ -1,0 +1,11 @@
+[gd_resource type="Theme" load_steps=3 format=3 uid="uid://dbhegub0favr1"]
+
+[ext_resource type="FontFile" uid="uid://dtvtku1xcvtvp" path="res://bpdots.squares-bold.otf" id="1_231o3"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_l37ci"]
+bg_color = Color(0.329412, 0.596078, 1, 1)
+
+[resource]
+default_font = ExtResource("1_231o3")
+default_font_size = 20
+Panel/styles/panel = SubResource("StyleBoxFlat_l37ci")

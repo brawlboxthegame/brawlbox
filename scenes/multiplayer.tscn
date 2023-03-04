@@ -1,0 +1,140 @@
+[gd_scene load_steps=5 format=3 uid="uid://f3hnpge12a1q"]
+
+[ext_resource type="Script" path="res://scripts/multiplayer/MultiplayerJoin.gd" id="1_76t0h"]
+[ext_resource type="Theme" uid="uid://dbhegub0favr1" path="res://new_theme.tres" id="2_tcair"]
+[ext_resource type="Texture2D" uid="uid://cfqtl4p7iusuj" path="res://textures/TitleLogo.png" id="3_bxbg5"]
+[ext_resource type="Texture2D" uid="uid://bg4hvpuidnku2" path="res://textures/gorge.png" id="4_0trfo"]
+
+[node name="Multiplayer" type="Node"]
+script = ExtResource("1_76t0h")
+
+[node name="Level" type="Node" parent="."]
+
+[node name="LevelSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://scenes/test.tscn")
+spawn_path = NodePath("../Level")
+spawn_limit = 1
+
+[node name="UI" type="Control" parent="."]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = -0.000120641
+theme = ExtResource("2_tcair")
+
+[node name="Net" type="Control" parent="UI"]
+custom_minimum_size = Vector2(200, 300)
+layout_mode = 2
+anchors_preset = 0
+offset_right = 640.0
+offset_bottom = 300.0
+
+[node name="TextureRect" type="TextureRect" parent="UI/Net"]
+layout_mode = 2
+offset_left = 19.999
+offset_top = 8.00241
+offset_right = 619.999
+offset_bottom = 71.0024
+size_flags_horizontal = 0
+texture = ExtResource("3_bxbg5")
+
+[node name="HostLabel" type="Label" parent="UI/Net"]
+layout_mode = 0
+offset_left = 243.988
+offset_top = 97.0294
+offset_right = 435.988
+offset_bottom = 118.029
+scale = Vector2(2, 2)
+text = "Character Select"
+
+[node name="CharacterEntry" type="HBoxContainer" parent="UI/Net"]
+layout_mode = 2
+offset_left = 292.983
+offset_top = 138.035
+offset_right = 623.983
+offset_bottom = 435.035
+alignment = 2
+
+[node name="Selector" type="TabContainer" parent="UI/Net/CharacterEntry"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Gorge" type="TextureRect" parent="UI/Net/CharacterEntry/Selector"]
+layout_mode = 2
+texture = ExtResource("4_0trfo")
+expand_mode = 2
+stretch_mode = 5
+
+[node name="NetworkBox" type="VBoxContainer" parent="UI/Net"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.95983
+offset_top = 333.001
+offset_right = -355.04
+offset_bottom = 159.001
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="IPEntry" type="HBoxContainer" parent="UI/Net/NetworkBox"]
+layout_mode = 2
+alignment = 2
+
+[node name="IPLabel" type="Label" parent="UI/Net/NetworkBox/IPEntry"]
+layout_mode = 2
+text = "Server IP:"
+
+[node name="Address" type="LineEdit" parent="UI/Net/NetworkBox/IPEntry"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "127.0.0.1"
+placeholder_text = "Remote Host"
+caret_blink = true
+caret_blink_interval = 0.5
+
+[node name="ConnectButton" type="Button" parent="UI/Net/NetworkBox"]
+layout_mode = 2
+text = "Connect"
+
+[node name="HostLabel" type="Label" parent="UI/Net/NetworkBox"]
+layout_mode = 2
+text = "Host Server:"
+
+[node name="HostButton" type="Button" parent="UI/Net/NetworkBox"]
+layout_mode = 2
+text = "Host"
+
+[node name="Options3" type="HBoxContainer" parent="UI/Net"]
+layout_mode = 2
+offset_top = 77.0
+offset_right = 640.0
+offset_bottom = 77.0
+alignment = 2
+
+[node name="NameEntry" type="HBoxContainer" parent="UI/Net"]
+layout_mode = 2
+offset_left = 4.96272
+offset_top = 309.001
+offset_right = 284.963
+offset_bottom = 335.001
+alignment = 2
+
+[node name="NameLabel" type="Label" parent="UI/Net/NameEntry"]
+layout_mode = 2
+text = "Username: "
+
+[node name="Name" type="LineEdit" parent="UI/Net/NameEntry"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "test"
+placeholder_text = "Enter a name..."
+caret_blink = true
+caret_blink_interval = 0.5
+
+[connection signal="pressed" from="UI/Net/NetworkBox/ConnectButton" to="." method="_on_connect_pressed"]
+[connection signal="pressed" from="UI/Net/NetworkBox/HostButton" to="." method="_on_host_pressed"]

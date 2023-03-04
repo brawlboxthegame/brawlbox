@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://dsxhs34uk8mqf"]
+
+[node name="Raycasts" type="Node2D"]
+position = Vector2(0, 32)
+
+[node name="GroundRay2" type="RayCast2D" parent="."]
+position = Vector2(-15, 0)
+target_position = Vector2(0, 4)
+collision_mask = 3
+hit_from_inside = true
+collide_with_areas = true
+
+[node name="GroundRay1" type="RayCast2D" parent="."]
+position = Vector2(15, 0)
+target_position = Vector2(0, 4)
+collision_mask = 3
+hit_from_inside = true
+collide_with_areas = true
+
+[node name="ForwardRay" type="RayCast2D" parent="."]
+position = Vector2(0, -32)
+target_position = Vector2(20, 0)
+collision_mask = 3
+
+[node name="GrabRay" type="RayCast2D" parent="."]
+position = Vector2(0, -32)
+target_position = Vector2(48, 0)
+collision_mask = 4

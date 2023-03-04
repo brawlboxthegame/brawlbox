@@ -1,0 +1,15 @@
+res://prefabs/player/NetworkingPlayer.tscn
+res://new_theme.tres
+res://textures/simple_tileset/simple_tileset.tres
+res://prefabs/DamageBox.tscn
+res://scenes/multiplayer.tscn
+res://prefabs/player/presets/Raycasts.tscn
+res://characters/Gorge/Gorge.tscn
+res://prefabs/player/presets/PlayerPrefabs.tscn
+res://characters/Gorge/objects/projectile.tscn
+res://scenes/test.tscn
+res://scripts/player/Player.gd
+res://scripts/multiplayer/MultiplayerJoin.gd
+res://scripts/attacks/Basic_Damage.gd
+res://scripts/multiplayer/NetworkState.gd
+res://scripts/player/PlayerMeta.gd

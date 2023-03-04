@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://qxwqik1ewv35"]
+
+[ext_resource type="Script" path="res://scripts/attacks/Basic_Damage.gd" id="1_brbe4"]
+[ext_resource type="Script" path="res://scripts/attacks/AttackMonitor.gd" id="2_7pt3q"]
+
+[sub_resource type="RectangleShape2D" id="21"]
+size = Vector2(2, 2)
+
+[node name="DamageBox" type="Area2D"]
+collision_layer = 4
+collision_mask = 4
+monitoring = false
+script = ExtResource("1_brbe4")
+
+[node name="SimpleAttack" type="CollisionShape2D" parent="."]
+modulate = Color(0.866667, 0.458824, 1, 1)
+shape = SubResource("21")
+script = ExtResource("2_7pt3q")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
