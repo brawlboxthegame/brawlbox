@@ -122,6 +122,7 @@ func deal_damage(body):
 				forward_direction *= calculated_charge()
 			if charge_affects_stun_frames:
 				stun_frames *= calculated_charge()
+				
 			if damage_player.name.contains("Player"):
 				child.deal_damage.call_deferred(calculated_damage, forward_direction * knockback_power, stun_frames, "attack", damage_player.net(), knockback_scaling)
 				damage_player.net().credit_damage(calculated_damage)

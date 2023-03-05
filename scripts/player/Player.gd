@@ -179,8 +179,7 @@ func handle_input():
 		net().cancel_invincibility()
 		if net().GRAB_START:
 			try_grab()
-		elif net().grabbing and net().GRAB:
-			pass
+		
 		elif net().grabbing and net().GRAB_RELEASE:
 				cancel_grab()
 				if net().UP:
@@ -190,7 +189,8 @@ func handle_input():
 				else: 
 					move("throw_forward")
 		else:
-			cancel_grab()
+			if not net().grabbing and net().GRAB:
+				cancel_grab()
 			if net().SPECIAL_RELEASE:
 				net().release_charge()
 				if net().UP and root.CHARGED_UP_SPECIAL:
@@ -284,19 +284,17 @@ func handle_input():
 
 	
 	
-func deal_damage(damage_added, knockback: Vector2, stun_frames, cause, damage_owner):
+func deal_damage(damage_added, knockback: Vector2, stun_frames, cause, damage_owner, knockback_scaling = 1):
 	const PLAYER_REASONS = ["attack"]
 	
-	var damage_percent = net().damage / 100.0 + 1
-	
-	
-	if is_multiplayer_authority():
-		if knockback.x > 0 or knockback.y > 0:
-			leave_grab()
-		rigidbody.set_linear_velocity(knockback * damage_percent)
-		net().add_damage(damage_added)
-		net().set_stun_frames(stun_frames)
-	if cause in PLAYER_REASONS:
+	var damage_percent = knockback_scaling * (net().damage / 100.0) + 1
+
+	if knockback.x > 0 or knockback.y > 0:
+		leave_grab()
+	rigidbody.set_linear_velocity(knockback * damage_percent)
+	net().add_damage(damage_added)
+	net().set_stun_frames(stun_frames)
+	if cause in PLAYER_REASONS and damage_owner != net():
 		net().set_damage_owner(damage_owner)
 	
 	

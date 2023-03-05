@@ -1,6 +1,9 @@
 extends Node2D
 @onready var name_tag = get_node("Name")
 @onready var display_ui = get_parent().get_node("PlayerInfo/MainContainer")
+@onready var damage_percent = display_ui.get_node("DamageContainer/Percent")
+@onready var kills_box = display_ui.get_node("StatsContainer/KillsBox/Kills")
+@onready var deaths_box = display_ui.get_node("StatsContainer/DeathsBox/Deaths")
 @export var damage = 0
 @export var damage_owner : String = ""
 @export var grab_child : String = ""
@@ -145,14 +148,18 @@ func credit_damage(n):
 func add_kill():
 	kills += 1
 func add_damage(n):
+	if not is_multiplayer_authority():
+		return
 	damage += n
 	damage_taken += n
 	if(damage > 999): 
 		damage = 0
 		death_frames = 180
-		deaths += 1
+		
 		grabbing = false
 		grabbed = false
+		if damage_owner != "":
+			deaths += 1
 
 	
 func flip():
@@ -186,9 +193,7 @@ func get_grab_player():
 func _physics_process(delta):
 	name_tag.text = username
 	position = player_position
-	var damage_percent = display_ui.get_node("DamageContainer/Percent")
-	var kills_box = display_ui.get_node("StatsContainer/KillsBox/Kills")
-	var deaths_box = display_ui.get_node("StatsContainer/DeathsBox/Deaths")
+
 	kills_box.text = "%s"%kills
 	deaths_box.text = "%s"%deaths
 	damage_percent.text = "%s%%" % damage

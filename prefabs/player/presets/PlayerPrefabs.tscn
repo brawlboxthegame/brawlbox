@@ -1,7 +1,13 @@
-[gd_scene load_steps=3 format=3 uid="uid://dojmkjno3wsog"]
+[gd_scene load_steps=6 format=3 uid="uid://dhb3v74hbcyv3"]
 
 [ext_resource type="PackedScene" uid="uid://dsxhs34uk8mqf" path="res://prefabs/player/presets/Raycasts.tscn" id="1_jv2jv"]
 [ext_resource type="Script" path="res://scripts/CameraFocus.gd" id="2_1h3dd"]
+[ext_resource type="Texture2D" uid="uid://lyq4ba8d1yj6" path="res://textures/ui/trans-path.png" id="3_8wtqv"]
+[ext_resource type="Script" path="res://scripts/Trail.gd" id="4_a6emp"]
+
+[sub_resource type="Curve" id="Curve_3ntw4"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
 
 [node name="PlayerPrefabs" type="Node2D"]
 
@@ -16,3 +22,12 @@ position = Vector2(32, -16)
 scale = Vector2(0.985768, 0.994047)
 enabled = false
 script = ExtResource("2_1h3dd")
+
+[node name="Line2D" type="Line2D" parent="."]
+z_index = -5
+points = PackedVector2Array(288, 15)
+width = 12.0
+width_curve = SubResource("Curve_3ntw4")
+texture = ExtResource("3_8wtqv")
+texture_mode = 1
+script = ExtResource("4_a6emp")

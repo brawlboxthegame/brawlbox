@@ -1,3 +1,4 @@
+Line2D
 GridContainer
 Control
 VBoxContainer
@@ -15,7 +16,6 @@ CollisionShape2D
 RigidBody2D
 Sprite2D
 CollisionPolygon2D
-Line2D
 TabContainer
 TabBar
 Button

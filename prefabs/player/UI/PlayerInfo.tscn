@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://dddd8m8hbsdsf"]
 
-[ext_resource type="Theme" path="res://new_theme.tres" id="1_5h35n"]
+[ext_resource type="Theme" uid="uid://d2moaagkxfom6" path="res://new_theme.tres" id="1_5h35n"]
 [ext_resource type="FontFile" uid="uid://dtvtku1xcvtvp" path="res://fonts/bpdots.squares-bold.otf" id="2_1wg3s"]
 [ext_resource type="Texture2D" uid="uid://cb38ee3kmw00c" path="res://characters/Gorge/textures/icon.png" id="2_2y4j3"]
 [ext_resource type="FontFile" uid="uid://cu7ngpe6v3las" path="res://fonts/PressStart2P-Regular.ttf" id="3_av7n3"]

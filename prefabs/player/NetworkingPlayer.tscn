@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/multiplayer/CharacterSpawner.gd" id="1_4e155"]
 [ext_resource type="Script" path="res://scripts/multiplayer/NetworkState.gd" id="2_yycdt"]
-[ext_resource type="Theme" path="res://new_theme.tres" id="3_pxjkj"]
+[ext_resource type="Theme" uid="uid://d2moaagkxfom6" path="res://new_theme.tres" id="3_pxjkj"]
 [ext_resource type="PackedScene" uid="uid://dddd8m8hbsdsf" path="res://prefabs/player/UI/PlayerInfo.tscn" id="4_8nysw"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_khri6"]
