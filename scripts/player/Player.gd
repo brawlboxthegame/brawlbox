@@ -10,7 +10,7 @@ extends CollisionShape2D
 @onready var front_check = get_node("PlayerPrefabs/Raycasts/ForwardRay")
 @onready var grab_check = get_node("PlayerPrefabs/Raycasts/GrabRay")
 @onready var move_delta = get_node("PlayerPrefabs/MoveDelta")
-@onready @export var grab_offset  = get_node("PlayerPrefabs/GrabPosition")
+@onready var grab_offset  = get_node("PlayerPrefabs/GrabPosition")
 @onready var camera = get_node("PlayerPrefabs/Camera2D")
 
 @onready var rigidbody = get_parent()
@@ -215,7 +215,7 @@ func handle_input():
 				else:
 					net().charge()
 				
-			if net().STRONG_RELEASE:
+			elif GROUNDED and net().STRONG_RELEASE:
 				net().release_charge()
 				if net().UP:
 					move("strong_up")
@@ -226,10 +226,9 @@ func handle_input():
 				else:
 					move("strong_neutral")
 					
-			elif net().STRONG:
+			elif GROUNDED and net().STRONG:
 				net().charge()
 			elif net().ATTACK:
-				
 				if not GROUNDED:
 					if net().UP:
 						move("air_up")

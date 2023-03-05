@@ -1,5 +1,5 @@
 res://prefabs/player/NetworkingPlayer.tscn
-res://prefabs/player/presets/Trail.gd
+res://scripts/Trail.gd
 res://new_theme.tres
 res://textures/simple_tileset/simple_tileset.tres
 res://scenes/multiplayer.tscn
@@ -10,7 +10,4 @@ res://characters/Gorge/objects/projectile.tscn
 res://scenes/test.tscn
 res://prefabs/player/UI/PlayerInfo.tscn
 res://prefabs/DamageBox.tscn
-res://scripts/Trail.gd
-res://scripts/multiplayer/NetworkState.gd
 res://scripts/player/Player.gd
-res://scripts/attacks/Basic_Damage.gd
