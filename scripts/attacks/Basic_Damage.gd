@@ -10,6 +10,7 @@ extends CollisionObject2D
 
 @export_category("Knockback Stats")
 @export var knockback_power: Vector2
+@export var knockback_scaling: int
 @export var stun_frames: int = 0
 @export var damage_player: Node2D
 
@@ -27,12 +28,13 @@ extends CollisionObject2D
 @export var peak_charge_frames = 0
 @export var charge_affects_damage = false
 @export var charge_affects_knockback = false
+@export var charge_affects_stun_frames = false
 
 @export_subgroup("Projectile Summons")
 @export var charge_affects_projectile_velocity = false
 @export var charge_affects_projectile_damage = false
 @export var charge_affects_projectile_knockback = false
-
+@export var charge_affects_projectile_stun_frames = false
 
 
 var projectiles_sent = true
@@ -88,6 +90,8 @@ func summon_projectiles():
 				new.maximum_damage *= calculated_charge()
 			if charge_affects_projectile_knockback:
 				new.knockback_power *= calculated_charge()
+			if charge_affects_projectile_stun_frames:
+				new.stun_frames *= calculated_charge()
 			new.freeze = false
 			new.visible = true
 			new.damage_player = self.damage_player
@@ -100,7 +104,7 @@ func deal_damage(body):
 			damage_player = self
 		if charged_attack:
 			charge_frames = damage_player.net().release_charge()
-	
+		var stun_time = stun_frames
 		var forward_direction = damage_player.scale
 		if body is RigidBody2D and body.get_parent().name.contains("player"):
 			var child = (body as RigidBody2D).get_child(0)
@@ -108,12 +112,18 @@ func deal_damage(body):
 			if child.net().i_frames > 0:
 				return
 				
-			var calculated_damage = randi_range(minimum_damage, maximum_damage)
+			var calculated_damage =  randi_range(minimum_damage, maximum_damage)
 			if(randi_range(0,99) < crit_chance):
 				calculated_damage *= randi_range(minimum_crit_multiplier, maximum_crit_multiplier)
-			
+		
+			if charge_affects_damage:
+				calculated_damage *= calculated_charge()
+			if charge_affects_knockback:
+				forward_direction *= calculated_charge()
+			if charge_affects_stun_frames:
+				stun_frames *= calculated_charge()
 			if damage_player.name.contains("Player"):
-				child.deal_damage.call_deferred(calculated_damage, forward_direction * knockback_power, stun_frames, "player", damage_player.net())
+				child.deal_damage.call_deferred(calculated_damage, forward_direction * knockback_power, stun_frames, "attack", damage_player.net(), knockback_scaling)
 				damage_player.net().credit_damage(calculated_damage)
 			else:
 				child.deal_damage.call_deferred(calculated_damage, forward_direction * knockback_power, stun_frames, "environment", null)

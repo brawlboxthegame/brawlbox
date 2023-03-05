@@ -1,9 +1,14 @@
-[gd_scene load_steps=5 format=3 uid="uid://f3hnpge12a1q"]
+[gd_scene load_steps=8 format=3 uid="uid://sdrcm5qp32t0"]
 
 [ext_resource type="Script" path="res://scripts/multiplayer/MultiplayerJoin.gd" id="1_76t0h"]
-[ext_resource type="Theme" uid="uid://dbhegub0favr1" path="res://new_theme.tres" id="2_tcair"]
+[ext_resource type="Theme" path="res://new_theme.tres" id="2_tcair"]
 [ext_resource type="Texture2D" uid="uid://cfqtl4p7iusuj" path="res://textures/TitleLogo.png" id="3_bxbg5"]
-[ext_resource type="Texture2D" uid="uid://bg4hvpuidnku2" path="res://textures/gorge.png" id="4_0trfo"]
+[ext_resource type="Script" path="res://scripts/CharacterSelect.gd" id="4_die55"]
+[ext_resource type="Script" path="res://scripts/JoinOnlineDialog.gd" id="5_0lbor"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_prfxp"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_yatyr"]
 
 [node name="Multiplayer" type="Node"]
 script = ExtResource("1_76t0h")
@@ -30,66 +35,69 @@ theme = ExtResource("2_tcair")
 custom_minimum_size = Vector2(200, 300)
 layout_mode = 2
 anchors_preset = 0
-offset_right = 640.0
-offset_bottom = 300.0
+offset_left = 9.93896
+offset_top = 506.001
+offset_right = 649.939
+offset_bottom = 806.001
 
 [node name="TextureRect" type="TextureRect" parent="UI/Net"]
 layout_mode = 2
-offset_left = 19.999
-offset_top = 8.00241
-offset_right = 619.999
-offset_bottom = 71.0024
+offset_left = 40.0577
+offset_top = -477.995
+offset_right = 1240.06
+offset_bottom = -349.995
 size_flags_horizontal = 0
 texture = ExtResource("3_bxbg5")
 
-[node name="HostLabel" type="Label" parent="UI/Net"]
-layout_mode = 0
-offset_left = 243.988
-offset_top = 97.0294
-offset_right = 435.988
-offset_bottom = 118.029
-scale = Vector2(2, 2)
-text = "Character Select"
+[node name="CharacterSelect" type="ItemList" parent="UI/Net"]
+clip_contents = false
+layout_mode = 2
+offset_left = 184.034
+offset_top = -278.978
+offset_right = 1084.03
+offset_bottom = 18.0222
+theme_override_styles/panel = SubResource("StyleBoxEmpty_prfxp")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_yatyr")
+max_columns = 10
+icon_mode = 0
+fixed_icon_size = Vector2i(128, 128)
+script = ExtResource("4_die55")
 
 [node name="CharacterEntry" type="HBoxContainer" parent="UI/Net"]
 layout_mode = 2
-offset_left = 292.983
-offset_top = 138.035
-offset_right = 623.983
-offset_bottom = 435.035
+offset_left = 469.034
+offset_top = -282.943
+offset_right = 800.034
+offset_bottom = 14.0566
 alignment = 2
 
-[node name="Selector" type="TabContainer" parent="UI/Net/CharacterEntry"]
-layout_mode = 2
-size_flags_horizontal = 3
+[node name="JoinOnlineDialog" type="AcceptDialog" parent="UI/Net"]
+title = "Connect To Server"
+position = Vector2i(384, 384)
+size = Vector2i(512, 128)
+ok_button_text = "Connect"
+script = ExtResource("5_0lbor")
 
-[node name="Gorge" type="TextureRect" parent="UI/Net/CharacterEntry/Selector"]
-layout_mode = 2
-texture = ExtResource("4_0trfo")
-expand_mode = 2
-stretch_mode = 5
-
-[node name="NetworkBox" type="VBoxContainer" parent="UI/Net"]
-layout_mode = 1
+[node name="NetworkBox" type="VBoxContainer" parent="UI/Net/JoinOnlineDialog"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 4.95983
-offset_top = 333.001
-offset_right = -355.04
-offset_bottom = 159.001
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -776.0
+offset_bottom = -876.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="IPEntry" type="HBoxContainer" parent="UI/Net/NetworkBox"]
+[node name="IPEntry" type="HBoxContainer" parent="UI/Net/JoinOnlineDialog/NetworkBox"]
 layout_mode = 2
 alignment = 2
 
-[node name="IPLabel" type="Label" parent="UI/Net/NetworkBox/IPEntry"]
+[node name="IPLabel" type="Label" parent="UI/Net/JoinOnlineDialog/NetworkBox/IPEntry"]
 layout_mode = 2
 text = "Server IP:"
 
-[node name="Address" type="LineEdit" parent="UI/Net/NetworkBox/IPEntry"]
+[node name="Address" type="LineEdit" parent="UI/Net/JoinOnlineDialog/NetworkBox/IPEntry"]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "127.0.0.1"
@@ -97,31 +105,41 @@ placeholder_text = "Remote Host"
 caret_blink = true
 caret_blink_interval = 0.5
 
-[node name="ConnectButton" type="Button" parent="UI/Net/NetworkBox"]
+[node name="HostJoin" type="Control" parent="UI/Net"]
+visible = false
 layout_mode = 2
-text = "Connect"
-
-[node name="HostLabel" type="Label" parent="UI/Net/NetworkBox"]
-layout_mode = 2
-text = "Host Server:"
-
-[node name="HostButton" type="Button" parent="UI/Net/NetworkBox"]
-layout_mode = 2
-text = "Host"
-
-[node name="Options3" type="HBoxContainer" parent="UI/Net"]
-layout_mode = 2
+anchors_preset = 0
+offset_left = 640.0
 offset_top = 77.0
 offset_right = 640.0
 offset_bottom = 77.0
-alignment = 2
+
+[node name="Host" type="Button" parent="UI/Net/HostJoin"]
+layout_mode = 0
+offset_left = 135.954
+offset_top = 302.094
+offset_right = 631.954
+offset_bottom = 367.094
+theme_override_font_sizes/font_size = 64
+text = "Host Game"
+
+[node name="Join" type="Button" parent="UI/Net/HostJoin"]
+layout_mode = 2
+offset_left = -642.046
+offset_top = 303.0
+offset_right = -146.046
+offset_bottom = 368.0
+theme_override_font_sizes/font_size = 64
+text = "Join Game
+"
 
 [node name="NameEntry" type="HBoxContainer" parent="UI/Net"]
 layout_mode = 2
-offset_left = 4.96272
-offset_top = 309.001
-offset_right = 284.963
-offset_bottom = 335.001
+offset_left = -4.03741
+offset_top = 310.0
+offset_right = 175.963
+offset_bottom = 336.0
+scale = Vector2(2, 2)
 alignment = 2
 
 [node name="NameLabel" type="Label" parent="UI/Net/NameEntry"]
@@ -133,8 +151,28 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "test"
 placeholder_text = "Enter a name..."
+max_length = 4
 caret_blink = true
 caret_blink_interval = 0.5
 
-[connection signal="pressed" from="UI/Net/NetworkBox/ConnectButton" to="." method="_on_connect_pressed"]
-[connection signal="pressed" from="UI/Net/NetworkBox/HostButton" to="." method="_on_host_pressed"]
+[node name="CanvasBox" type="CanvasLayer" parent="."]
+follow_viewport_scale = 2.0
+
+[node name="GridContainer" type="GridContainer" parent="CanvasBox"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -120.0
+offset_right = 108.0
+offset_bottom = 8.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/h_separation = 16
+
+[connection signal="item_selected" from="UI/Net/CharacterSelect" to="UI/Net/CharacterSelect" method="_on_item_selected"]
+[connection signal="confirmed" from="UI/Net/JoinOnlineDialog" to="." method="_on_connect_pressed"]
+[connection signal="pressed" from="UI/Net/HostJoin/Host" to="." method="_on_host_pressed"]
+[connection signal="pressed" from="UI/Net/HostJoin/Join" to="UI/Net/JoinOnlineDialog" method="_on_host_button_pressed"]

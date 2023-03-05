@@ -12,7 +12,7 @@ extends CollisionShape2D
 @onready var move_delta = get_node("PlayerPrefabs/MoveDelta")
 @onready @export var grab_offset  = get_node("PlayerPrefabs/GrabPosition")
 @onready var camera = get_node("PlayerPrefabs/Camera2D")
-@export var grabbed_player: Node2D = null
+
 @onready var rigidbody = get_parent()
 
 @export var DAMAGED = false
@@ -43,6 +43,7 @@ func stun_animation():
 func _physics_process(delta):
 	net().update_timers()
 	if net().death_frames > 1:
+		net().credit_kill()
 		visible = false
 		cancel_grab()
 		rigidbody.freeze = true
@@ -75,9 +76,9 @@ func update_scale():
 		scale = Vector2(1,1)
 func ground_check():
 	return ground_check1.is_colliding() or ground_check2.is_colliding()
+	
 func update_player_state():
 	update_scale()
-
 	rigidbody.position = net().player_position
 	DASH = false
 	if(net().dash_frames > 0):
@@ -123,8 +124,9 @@ func apply_friction():
 # Grab functionality.
 func try_grab():
 	if grab_check.is_colliding():
-		grabbed_player = grab_check.get_collider().get_node("Player")
-		grabbed_player.grab(net())
+		var gp = grab_check.get_collider().get_node("Player")
+		net().set_grab_child(gp.net())
+		gp.grab(net())
 		net().set_grabbing(true)
 		anim.set_current_animation("misc_grab")
 	else:
@@ -135,18 +137,19 @@ func grab(damage_owner: Node2D):
 		net().get_damage_player().release_grab() # don't cancel, we'll still be grabbed afterwards
 	net().set_damage_owner(damage_owner)
 	rigidbody.freeze = true
-	net().set_stun_frames(30)
 	net().set_grabbed(true)
+	net().set_stun_frames(30)
 
 # This function is to call the leave_grab function on the grabbed player.
 func cancel_grab():
-	if grabbed_player != null:
-		grabbed_player.leave_grab()
+	if net().grab_child != "":
+		net().get_grab_player().leave_grab()
 	else:
 		release_grab()
+		
 func release_grab():
 	net().set_grabbing(false)
-	grabbed_player = null
+	net().grab_child = ""
 	
 func leave_grab():
 	if net().damage_owner != "" and net().grabbed:
@@ -174,109 +177,109 @@ func handle_input():
 			move("misc_shield")
 	else:
 		net().cancel_invincibility()
-		if net().GRAB and grabbed_player == null:
+		if net().GRAB_START:
 			try_grab()
-	
+		elif net().grabbing and net().GRAB:
+			pass
 		elif net().grabbing and net().GRAB_RELEASE:
-				
 				cancel_grab()
-				release_grab()
 				if net().UP:
 					move("throw_up")
 				elif net().DOWN:
 					move("throw_down")
 				else: 
 					move("throw_forward")
-	
-		elif net().SPECIAL_RELEASE:
-			net().release_charge()
-			if net().UP and root.CHARGED_UP_SPECIAL:
-				move("special_up")
-			elif net().DOWN and root.CHARGED_DOWN_SPECIAL:
-				move("special_down")
-			elif net().RIGHT or net().LEFT and root.CHARGED_FORWARD_SPECIAL:
-				move("special_forward")
-			elif root.CHARGED_NEUTRAL_SPECIAL:
-				move("special_neutral")
-			
-				
-		elif net().SPECIAL:
-			if net().UP and not root.CHARGED_UP_SPECIAL:
-				move("special_up")
-			elif net().DOWN and not root.CHARGED_DOWN_SPECIAL:
-				move("special_down")
-			elif (net().RIGHT or net().LEFT) and not root.CHARGED_FORWARD_SPECIAL:
-				move("special_forward")
-			elif not root.CHARGED_NEUTRAL_SPECIAL:
-				move("special_neutral")
-			else:
-				net().charge()
-			
-		if net().STRONG_RELEASE:
-			net().release_charge()
-			if net().UP:
-				move("strong_up")
-			elif net().DOWN:
-				move("strong_down")
-			elif net().RIGHT or net().LEFT:
-				move("strong_forward")
-			else:
-				move("strong_neutral")
-				
-		elif net().STRONG:
-			net().charge()
-		elif net().ATTACK:
-			
-			if not GROUNDED:
-				if net().UP:
-					move("air_up")
-				elif net().DOWN:
-					move("air_down")
-				elif net().RIGHT or net().LEFT:
-					move("air_forward")
-				else: 
-					move("air_neutral")
-			else:
-				if net().UP:
-					move("regular_up")
-				elif net().DOWN:
-					move("regular_down")
-				elif net().RIGHT or net().LEFT:
-					move("regular_forward")
-				else: 
-					move("regular_neutral")
-		elif DASH:
-				if GROUNDED:
-					move("move_dash", MOVEMENTS, true)
-					net().set_i_frames(10)
-				elif not net().double_jumped:
-					net().set_double_jumped(true)
-					net().set_i_frames(10)
-					
-					move("move_airdash", MOVEMENTS, true)
 		else:
-			if net().wall_check and net().LEFT != net().RIGHT:
-				if net().JUMP:
-					net().flip()
-					net().set_double_jumped(false)
-					move("move_wall_kick", MOVEMENTS, true)
-				else:
-					set_relative_velocity(Vector2(0,0))
-			elif net().JUMP:
+			cancel_grab()
+			if net().SPECIAL_RELEASE:
+				net().release_charge()
+				if net().UP and root.CHARGED_UP_SPECIAL:
+					move("special_up")
+				elif net().DOWN and root.CHARGED_DOWN_SPECIAL:
+					move("special_down")
+				elif net().RIGHT or net().LEFT and root.CHARGED_FORWARD_SPECIAL:
+					move("special_forward")
+				elif root.CHARGED_NEUTRAL_SPECIAL:
+					move("special_neutral")
 				
-				if GROUNDED:
-					move("move_jump",["move_forward"], true)
-				elif not net().double_jumped:
-					net().set_double_jumped(true)
-					# Base double jump height is 30 units. Scale in the editor accordingly.
-					move("move_jump",["move_forward"], true)
-			elif net().DOWN and not GROUNDED:
-				move("move_duck")
-			elif net().LEFT != net().RIGHT:
-				net().set_dash_frames(5)
-				if (net().LEFT and not net().flipped) or (net().RIGHT and net().flipped):
-					net().flip()
-				move("move_forward",["move_forward","move_jump"], true)
+					
+			elif net().SPECIAL:
+				if net().UP and not root.CHARGED_UP_SPECIAL:
+					move("special_up")
+				elif net().DOWN and not root.CHARGED_DOWN_SPECIAL:
+					move("special_down")
+				elif (net().RIGHT or net().LEFT) and not root.CHARGED_FORWARD_SPECIAL:
+					move("special_forward")
+				elif not root.CHARGED_NEUTRAL_SPECIAL:
+					move("special_neutral")
+				else:
+					net().charge()
+				
+			if net().STRONG_RELEASE:
+				net().release_charge()
+				if net().UP:
+					move("strong_up")
+				elif net().DOWN:
+					move("strong_down")
+				elif net().RIGHT or net().LEFT:
+					move("strong_forward")
+				else:
+					move("strong_neutral")
+					
+			elif net().STRONG:
+				net().charge()
+			elif net().ATTACK:
+				
+				if not GROUNDED:
+					if net().UP:
+						move("air_up")
+					elif net().DOWN:
+						move("air_down")
+					elif net().RIGHT or net().LEFT:
+						move("air_forward")
+					else: 
+						move("air_neutral")
+				else:
+					if net().UP:
+						move("regular_up")
+					elif net().DOWN:
+						move("regular_down")
+					elif net().RIGHT or net().LEFT:
+						move("regular_forward")
+					else: 
+						move("regular_neutral")
+			elif DASH:
+					if GROUNDED:
+						move("move_dash", MOVEMENTS, true)
+						net().set_i_frames(10)
+					elif not net().double_jumped:
+						net().set_double_jumped(true)
+						net().set_i_frames(10)
+						
+						move("move_airdash", MOVEMENTS, true)
+			else:
+				if net().wall_check and not GROUNDED and net().LEFT != net().RIGHT:
+					if net().JUMP:
+						net().flip()
+						net().set_double_jumped(false)
+						move("move_wall_kick", MOVEMENTS, true)
+					else:
+						set_relative_velocity(Vector2(0,0))
+				elif net().JUMP:
+					
+					if GROUNDED:
+						move("move_jump",["move_forward"], true)
+					elif not net().double_jumped:
+						net().set_double_jumped(true)
+						# Base double jump height is 30 units. Scale in the editor accordingly.
+						move("move_jump",["move_forward"], true)
+				elif net().DOWN and not GROUNDED:
+					move("move_duck")
+				elif net().LEFT != net().RIGHT:
+					net().set_dash_frames(5)
+					if (net().LEFT and not net().flipped) or (net().RIGHT and net().flipped):
+						net().flip()
+					move("move_forward",["move_forward","move_jump"], true)
 
 
 	

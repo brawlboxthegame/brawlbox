@@ -1,0 +1,93 @@
+[gd_scene load_steps=7 format=3 uid="uid://dddd8m8hbsdsf"]
+
+[ext_resource type="Theme" path="res://new_theme.tres" id="1_5h35n"]
+[ext_resource type="FontFile" uid="uid://dtvtku1xcvtvp" path="res://fonts/bpdots.squares-bold.otf" id="2_1wg3s"]
+[ext_resource type="Texture2D" uid="uid://cb38ee3kmw00c" path="res://characters/Gorge/textures/icon.png" id="2_2y4j3"]
+[ext_resource type="FontFile" uid="uid://cu7ngpe6v3las" path="res://fonts/PressStart2P-Regular.ttf" id="3_av7n3"]
+[ext_resource type="Texture2D" uid="uid://lnjg0nssy6ny" path="res://textures/ui/icon_kill.png" id="4_1x6mj"]
+[ext_resource type="Texture2D" uid="uid://5q01mw0w0yuq" path="res://textures/ui/icon_death.png" id="5_iri7q"]
+
+[node name="PlayerInfo" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_5h35n")
+
+[node name="MainContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+offset_top = 7.0
+offset_right = 192.0
+offset_bottom = 103.0
+theme_override_constants/separation = 0
+
+[node name="Name" type="Label" parent="MainContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+theme_override_fonts/font = ExtResource("2_1wg3s")
+theme_override_font_sizes/font_size = 20
+text = "PLAYER"
+horizontal_alignment = 1
+
+[node name="DamageContainer" type="HBoxContainer" parent="MainContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="Icon" type="TextureRect" parent="MainContainer/DamageContainer"]
+layout_mode = 2
+texture = ExtResource("2_2y4j3")
+expand_mode = 2
+
+[node name="Percent" type="Label" parent="MainContainer/DamageContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_fonts/font = ExtResource("3_av7n3")
+theme_override_font_sizes/font_size = 32
+text = "110%"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="StatsContainer" type="HBoxContainer" parent="MainContainer"]
+layout_mode = 2
+
+[node name="KillsBox" type="HBoxContainer" parent="MainContainer/StatsContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_constants/separation = 1
+
+[node name="Icon" type="TextureRect" parent="MainContainer/StatsContainer/KillsBox"]
+layout_mode = 2
+size_flags_horizontal = 0
+texture = ExtResource("4_1x6mj")
+expand_mode = 3
+
+[node name="Kills" type="Label" parent="MainContainer/StatsContainer/KillsBox"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_av7n3")
+theme_override_font_sizes/font_size = 16
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="DeathsBox" type="HBoxContainer" parent="MainContainer/StatsContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_constants/separation = 1
+
+[node name="Icon" type="TextureRect" parent="MainContainer/StatsContainer/DeathsBox"]
+layout_mode = 2
+size_flags_horizontal = 0
+texture = ExtResource("5_iri7q")
+expand_mode = 3
+
+[node name="Deaths" type="Label" parent="MainContainer/StatsContainer/DeathsBox"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_av7n3")
+theme_override_font_sizes/font_size = 16
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 2

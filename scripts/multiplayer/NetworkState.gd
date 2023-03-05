@@ -1,7 +1,9 @@
 extends Node2D
 @onready var name_tag = get_node("Name")
+@onready var display_ui = get_parent().get_node("PlayerInfo/MainContainer")
 @export var damage = 0
 @export var damage_owner : String = ""
+@export var grab_child : String = ""
 @export var i_frames = 0
 @export var charge_frames = 0
 @export var dash_frames = 0
@@ -21,7 +23,7 @@ extends Node2D
 @export var ATTACK = false
 @export var SPECIAL = false
 @export var SPECIAL_RELEASE = false
-
+@export var GRAB_START = false
 @export var GRAB = false
 @export var GRAB_RELEASE = false
 @export var SHIELD = false
@@ -41,18 +43,31 @@ extends Node2D
 @export var kills = 0
 @export var deaths = 0
 @export var username = ""
-# Color((300.0 - get_net().damage)/100, (200.0 - get_net().damage)/100, (100.0 - get_net().damage)/100)
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	if not is_multiplayer_authority():
+		return
+	var ui = get_tree().root.get_node("Multiplayer/UI/Net")
+	
+	var sel = ui.get_node("CharacterSelect")
+	var user = ui.get_node("NameEntry/Name")
+	type = sel.selected
+	username = user.text
+	
+
 func update_inputs():
 	if not is_multiplayer_authority():
 		return
-
 	ATTACK = Input.is_action_just_pressed("attack")
 	SPECIAL = Input.is_action_pressed("special")
 	SPECIAL_RELEASE = Input.is_action_just_released("special")
 	STRONG = Input.is_action_pressed("strong")
 	STRONG_RELEASE = Input.is_action_just_released("strong")
-	GRAB = Input.is_action_just_pressed("grab")
-	GRAB_RELEASE = not Input.is_action_pressed("grab")
+	GRAB_START = Input.is_action_just_pressed("grab")
+	GRAB = Input.is_action_pressed("grab")
+	GRAB_RELEASE = Input.is_action_just_released("grab")
 	SHIELD = Input.is_action_pressed("shield") 
 	UP = Input.is_action_pressed("move_up") or Input.is_action_pressed("directional_up")
 	JUMP = Input.is_action_just_pressed("move_up") or Input.is_action_just_pressed("jump")
@@ -62,6 +77,7 @@ func update_inputs():
 	JUST_RIGHT = Input.is_action_just_pressed("move_right")
 	JUST_LEFT = Input.is_action_just_pressed("move_left")
 	DIRECTIONAL_ONLY = Input.is_action_pressed("directional_up") or Input.is_action_pressed("directional_down") or Input.is_action_pressed("directional_right") or Input.is_action_pressed("directional_left")
+
 func update_position(p):
 	if not is_multiplayer_authority():
 		return
@@ -99,10 +115,6 @@ func release_charge():
 		charge_frames = 0
 	return saved_charge
 
-func set_damage_owner(d):
-	if not is_multiplayer_authority():
-		return
-	damage_owner = d.get_parent().name
 
 func set_double_jumped(d):
 	if not is_multiplayer_authority():
@@ -119,14 +131,20 @@ func set_grabbing(g):
 	
 func set_grabbed(g):
 	grabbed = g
-	
-func add_kill():
-	kills += 1
-func credit_damage(n):
-	damage_given += n
-func add_damage(n):
+
+
+func credit_kill():
+	if damage_owner != "":
+		get_damage_owner().add_kill()
 	if not is_multiplayer_authority():
 		return
+	damage_owner = ""
+
+func credit_damage(n):
+	damage_given += n
+func add_kill():
+	kills += 1
+func add_damage(n):
 	damage += n
 	damage_taken += n
 	if(damage > 999): 
@@ -135,34 +153,46 @@ func add_damage(n):
 		deaths += 1
 		grabbing = false
 		grabbed = false
-		
-		if damage_owner != "" && damage_owner != null:
-			get_damage_owner().add_kill()
-		damage_owner = ""
 
+	
 func flip():
 	flipped = not flipped
-func get_damage_owner():
-	return get_parent().get_parent().get_node("%s/NetworkState" % damage_owner)
-func get_damage_player():
-	return get_parent().get_parent().get_node("%s/Rigidbody/Player" % damage_owner.replace("net","player"))
 	
-# Called when the node enters the scene tree for the first time.
-func _ready():
+
+func set_damage_owner(d):
 	if not is_multiplayer_authority():
 		return
-	var ui = get_tree().root.get_node("Multiplayer/UI/Net")
-	var net_details = get_tree().root.get_node("Multiplayer/UI/Net")
-	var sel = ui.get_node("CharacterEntry/Selector")
-	var user = ui.get_node("NameEntry/Name")
-	type = sel.get_child(sel.current_tab).name
-	username = user.text
+	damage_owner = d.get_parent().name
+
+func get_damage_owner():
+	return get_parent().get_parent().get_node("%s/NetworkState" % damage_owner)
 	
+func get_damage_player():
+	return get_parent().get_parent().get_node("%s/Rigidbody/Player" % damage_owner.replace("net","player"))
+
+func set_grab_child(d):
+	if not is_multiplayer_authority():
+		return
+	grab_child = d.get_parent().name
+	
+func get_grab_child():
+	return get_parent().get_parent().get_node("%s/NetworkState" % grab_child)
+	
+func get_grab_player():
+	return get_parent().get_parent().get_node("%s/Rigidbody/Player" % grab_child.replace("net","player"))
+	
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta):
 	name_tag.text = username
 	position = player_position
-
+	var damage_percent = display_ui.get_node("DamageContainer/Percent")
+	var kills_box = display_ui.get_node("StatsContainer/KillsBox/Kills")
+	var deaths_box = display_ui.get_node("StatsContainer/DeathsBox/Deaths")
+	kills_box.text = "%s"%kills
+	deaths_box.text = "%s"%deaths
+	damage_percent.text = "%s%%" % damage
+	damage_percent.modulate = Color((300.0 - damage)/100, (200.0 - damage)/100, (100.0 - damage)/100)
 	
 func update_timers():
 	if not is_multiplayer_authority():

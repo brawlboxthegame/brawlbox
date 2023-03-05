@@ -3,12 +3,12 @@
 importer="font_data_dynamic"
 type="FontFile"
 uid="uid://dtvtku1xcvtvp"
-path="res://.godot/imported/bpdots.squares-bold.otf-6f9683712fa4c665a755a735a0bf767d.fontdata"
+path="res://.godot/imported/bpdots.squares-bold.otf-30d511875cfd887360fd62921e9a38f9.fontdata"
 
 [deps]
 
-source_file="res://bpdots.squares-bold.otf"
-dest_files=["res://.godot/imported/bpdots.squares-bold.otf-6f9683712fa4c665a755a735a0bf767d.fontdata"]
+source_file="res://fonts/bpdots.squares-bold.otf"
+dest_files=["res://.godot/imported/bpdots.squares-bold.otf-30d511875cfd887360fd62921e9a38f9.fontdata"]
 
 [params]
 

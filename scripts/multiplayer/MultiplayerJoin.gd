@@ -27,7 +27,7 @@ func _on_host_pressed():
 
 func _on_connect_pressed():
 	# Start as client
-	var txt : String = $UI/Net/NetworkBox/IPEntry/Address.text
+	var txt : String = $UI/Net/JoinOnlineDialog/NetworkBox/IPEntry/Address.text
 	if txt == "":
 		OS.alert("Need a remote to connect to.")
 		return

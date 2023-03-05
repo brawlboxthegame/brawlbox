@@ -1,7 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://mfuwuoladpxf"]
+[gd_scene load_steps=4 format=3 uid="uid://b1tcs1os4whcl"]
 
 [ext_resource type="Script" path="res://scripts/attacks/Basic_Damage.gd" id="1_bercq"]
-[ext_resource type="Texture2D" uid="uid://0o66bwprdqg1" path="res://textures/eye.png" id="2_wmqkf"]
+[ext_resource type="Texture2D" uid="uid://0o66bwprdqg1" path="res://characters/Gorge/textures/eye.png" id="2_dyst1"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_rm5d0"]
 
@@ -25,6 +25,6 @@ metadata/_edit_horizontal_guides_ = []
 shape = SubResource("CircleShape2D_rm5d0")
 
 [node name="Eye" type="Sprite2D" parent="."]
-texture = ExtResource("2_wmqkf")
+texture = ExtResource("2_dyst1")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

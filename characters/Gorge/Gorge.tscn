@@ -1,13 +1,15 @@
-[gd_scene load_steps=40 format=3 uid="uid://dbu0kxn8rhj0l"]
+[gd_scene load_steps=41 format=3 uid="uid://dig1743ag8rnq"]
 
 [ext_resource type="Script" path="res://scripts/player/PlayerMeta.gd" id="1_0c3rl"]
 [ext_resource type="Script" path="res://scripts/player/Player.gd" id="1_maoeo"]
+[ext_resource type="Texture2D" uid="uid://cb38ee3kmw00c" path="res://characters/Gorge/textures/icon.png" id="2_jdq87"]
 [ext_resource type="PackedScene" uid="uid://qxwqik1ewv35" path="res://prefabs/DamageBox.tscn" id="2_rl08c"]
-[ext_resource type="Texture2D" uid="uid://bg4hvpuidnku2" path="res://textures/gorge.png" id="3_y7dai"]
-[ext_resource type="PackedScene" uid="uid://mfuwuoladpxf" path="res://characters/Gorge/objects/projectile.tscn" id="4_2gi4m"]
+[ext_resource type="PackedScene" uid="uid://b1tcs1os4whcl" path="res://characters/Gorge/objects/projectile.tscn" id="4_2gi4m"]
 [ext_resource type="PackedScene" uid="uid://dojmkjno3wsog" path="res://prefabs/player/presets/PlayerPrefabs.tscn" id="4_cldgu"]
+[ext_resource type="Texture2D" uid="uid://bg4hvpuidnku2" path="res://characters/Gorge/textures/gorge.png" id="6_iu5sf"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_n2h4g"]
+rough = true
 bounce = 0.2
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_5gr6h"]
@@ -259,6 +261,18 @@ tracks/2/keys = {
 }]
 }
 
+[sub_resource type="Animation" id="Animation_igui7"]
+resource_name = "special_down"
+
+[sub_resource type="Animation" id="Animation_gkee8"]
+resource_name = "special_forward"
+
+[sub_resource type="Animation" id="Animation_6gahp"]
+resource_name = "special_neutral"
+
+[sub_resource type="Animation" id="Animation_4t64w"]
+resource_name = "special_up"
+
 [sub_resource type="Animation" id="Animation_5y5nh"]
 resource_name = "strong_down"
 
@@ -323,18 +337,6 @@ resource_name = "throw_neutral"
 [sub_resource type="Animation" id="Animation_sljg0"]
 resource_name = "throw_up"
 
-[sub_resource type="Animation" id="Animation_6gahp"]
-resource_name = "special_neutral"
-
-[sub_resource type="Animation" id="Animation_gkee8"]
-resource_name = "special_forward"
-
-[sub_resource type="Animation" id="Animation_4t64w"]
-resource_name = "special_up"
-
-[sub_resource type="Animation" id="Animation_igui7"]
-resource_name = "special_down"
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_omqjk"]
 _data = {
 "air_down": SubResource("Animation_sjo78"),
@@ -371,6 +373,8 @@ _data = {
 
 [node name="PlayerInst" type="Node2D"]
 script = ExtResource("1_0c3rl")
+icon_sprite = ExtResource("2_jdq87")
+character_name = "Gorge"
 
 [node name="Rigidbody" type="RigidBody2D" parent="."]
 position = Vector2(16, -32)
@@ -394,7 +398,6 @@ script = ExtResource("1_maoeo")
 [node name="Regulars" type="Node2D" parent="Rigidbody/Player/Hurtboxes"]
 
 [node name="Forward" parent="Rigidbody/Player/Hurtboxes/Regulars" instance=ExtResource("2_rl08c")]
-position = Vector2(0, -20)
 knockback_power = Vector2(999, 0)
 
 [node name="Neutral" parent="Rigidbody/Player/Hurtboxes/Regulars" instance=ExtResource("2_rl08c")]
@@ -439,7 +442,6 @@ position = Vector2(48, 0)
 [node name="Special" type="Node2D" parent="Rigidbody/Player/Hurtboxes"]
 
 [node name="Forward" parent="Rigidbody/Player/Hurtboxes/Special" instance=ExtResource("2_rl08c")]
-position = Vector2(-32, -20)
 
 [node name="Neutral" parent="Rigidbody/Player/Hurtboxes/Special" instance=ExtResource("2_rl08c")]
 
@@ -469,7 +471,7 @@ libraries = {
 
 [node name="Gorge" type="Sprite2D" parent="Rigidbody/Player"]
 scale = Vector2(2, 2)
-texture = ExtResource("3_y7dai")
+texture = ExtResource("6_iu5sf")
 
 [node name="Line2D" type="Line2D" parent="Rigidbody/Player/Gorge"]
 

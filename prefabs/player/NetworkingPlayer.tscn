@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://bvjkm73f6ppyl"]
+[gd_scene load_steps=6 format=3 uid="uid://c75umfnh86jsi"]
 
 [ext_resource type="Script" path="res://scripts/multiplayer/CharacterSpawner.gd" id="1_4e155"]
 [ext_resource type="Script" path="res://scripts/multiplayer/NetworkState.gd" id="2_yycdt"]
-[ext_resource type="Theme" uid="uid://dbhegub0favr1" path="res://new_theme.tres" id="3_pxjkj"]
+[ext_resource type="Theme" path="res://new_theme.tres" id="3_pxjkj"]
+[ext_resource type="PackedScene" uid="uid://dddd8m8hbsdsf" path="res://prefabs/player/UI/PlayerInfo.tscn" id="4_8nysw"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_khri6"]
 properties/0/path = NodePath("NetworkState:damage")
@@ -116,9 +117,18 @@ properties/35/sync = true
 properties/36/path = NodePath("NetworkState:SPECIAL_RELEASE")
 properties/36/spawn = true
 properties/36/sync = true
+properties/37/path = NodePath("NetworkState:GRAB_START")
+properties/37/spawn = true
+properties/37/sync = true
+properties/38/path = NodePath("NetworkState:grab_child")
+properties/38/spawn = true
+properties/38/sync = true
 
 [node name="Network" type="Node2D"]
 script = ExtResource("1_4e155")
+
+[node name="PlayerInfo" parent="." instance=ExtResource("4_8nysw")]
+visible = false
 
 [node name="NetworkState" type="Node2D" parent="."]
 script = ExtResource("2_yycdt")
@@ -137,7 +147,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("3_pxjkj")
 theme_type_variation = &"HeaderSmall"
-text = "2%"
+text = "NAME"
 horizontal_alignment = 1
 
 [node name="1" type="MultiplayerSynchronizer" parent="."]

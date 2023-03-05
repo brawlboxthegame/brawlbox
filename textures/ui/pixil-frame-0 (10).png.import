@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://0o66bwprdqg1"
-path="res://.godot/imported/eye.png-ebbdbfc8d1dac76770619fd10d2280c7.ctex"
+uid="uid://c1qgskh7yktqu"
+path="res://.godot/imported/pixil-frame-0 (10).png-d55941586a3d7fd5bdec834168297319.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://textures/eye.png"
-dest_files=["res://.godot/imported/eye.png-ebbdbfc8d1dac76770619fd10d2280c7.ctex"]
+source_file="res://textures/ui/pixil-frame-0 (10).png"
+dest_files=["res://.godot/imported/pixil-frame-0 (10).png-d55941586a3d7fd5bdec834168297319.ctex"]
 
 [params]
 

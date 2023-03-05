@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://bucbq27q7wpsa"
-path="res://.godot/imported/pixelized-mono.ttf-2a7ecfdf1902c3bd43d382afdbbd760d.fontdata"
+uid="uid://cu7ngpe6v3las"
+path="res://.godot/imported/PressStart2P-Regular.ttf-c7d83f2c4bd295d4c960a93a703ae2b2.fontdata"
 
 [deps]
 
-source_file="res://pixelized-mono.ttf"
-dest_files=["res://.godot/imported/pixelized-mono.ttf-2a7ecfdf1902c3bd43d382afdbbd760d.fontdata"]
+source_file="res://fonts/PressStart2P-Regular.ttf"
+dest_files=["res://.godot/imported/PressStart2P-Regular.ttf-c7d83f2c4bd295d4c960a93a703ae2b2.fontdata"]
 
 [params]
 

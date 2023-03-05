@@ -1,8 +1,7 @@
 extends Node2D
 @export_category("Sprites")
-@export var sprite_small : Texture2D
-@export var sprite_large : Texture2D
-@export var char_name : String
+@export var icon_sprite : Texture2D
+@export var character_name : String
 @export_category("Charged Attacks")
 @export var CHARGED_UP_SPECIAL = false
 @export var CHARGED_DOWN_SPECIAL = false
