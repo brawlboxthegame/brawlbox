@@ -8,6 +8,12 @@ res://characters/Gorge/Gorge.tscn
 res://prefabs/player/presets/PlayerPrefabs.tscn
 res://characters/Gorge/objects/projectile.tscn
 res://scenes/test.tscn
-res://prefabs/player/UI/PlayerInfo.tscn
+res://prefabs/ui/PlayerInfo.tscn
 res://prefabs/DamageBox.tscn
+res://prefabs/player/RoomSettings.gd
+res://scripts/multiplayer/NetworkState.gd
 res://scripts/player/Player.gd
+res://scenes/Owner.gd
+res://scenes/NetStartGameButton.gd
+res://scripts/NetStartGameButton.gd
+res://scripts/Owner.gd

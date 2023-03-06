@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://c75umfnh86jsi"]
+[gd_scene load_steps=7 format=3 uid="uid://de6j2dq7gcvdd"]
 
 [ext_resource type="Script" path="res://scripts/multiplayer/CharacterSpawner.gd" id="1_4e155"]
 [ext_resource type="Script" path="res://scripts/multiplayer/NetworkState.gd" id="2_yycdt"]
 [ext_resource type="Theme" uid="uid://d2moaagkxfom6" path="res://new_theme.tres" id="3_pxjkj"]
-[ext_resource type="PackedScene" uid="uid://dddd8m8hbsdsf" path="res://prefabs/player/UI/PlayerInfo.tscn" id="4_8nysw"]
+[ext_resource type="PackedScene" uid="uid://dddd8m8hbsdsf" path="res://prefabs/ui/PlayerInfo.tscn" id="4_8nysw"]
+[ext_resource type="Script" path="res://prefabs/player/RoomSettings.gd" id="5_41wjs"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_khri6"]
 properties/0/path = NodePath("NetworkState:damage")
@@ -123,9 +124,27 @@ properties/37/sync = true
 properties/38/path = NodePath("NetworkState:grab_child")
 properties/38/spawn = true
 properties/38/sync = true
+properties/39/path = NodePath("RoomSettings:game_active")
+properties/39/spawn = true
+properties/39/sync = true
+properties/40/path = NodePath("RoomSettings:timer")
+properties/40/spawn = true
+properties/40/sync = true
+properties/41/path = NodePath("NetworkState:spectator")
+properties/41/spawn = true
+properties/41/sync = true
+properties/42/path = NodePath("NetworkState:stocks")
+properties/42/spawn = true
+properties/42/sync = true
+properties/43/path = NodePath("RoomSettings:stocks")
+properties/43/spawn = true
+properties/43/sync = true
 
 [node name="Network" type="Node2D"]
 script = ExtResource("1_4e155")
+
+[node name="RoomSettings" type="Node2D" parent="."]
+script = ExtResource("5_41wjs")
 
 [node name="PlayerInfo" parent="." instance=ExtResource("4_8nysw")]
 visible = false

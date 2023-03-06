@@ -23,7 +23,6 @@ func _process(n):
 		(display_ui.get_node("DamageContainer/Icon") as TextureRect).texture = character.icon_sprite
 		display_ui.reparent(ingame_ui)
 		ingame_ui.columns += 1
-
 		character.position = Vector2(0,-100)
 		character.name = name.replace("net","player")
 		player_root.add_child(character, true)

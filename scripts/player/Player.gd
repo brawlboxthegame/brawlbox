@@ -38,18 +38,15 @@ func _ready():
 func stun_animation():
 	self.modulate = Color(1,int(net().stun_frames) % 2,int(net().stun_frames) % 2)
 	net().SHIELD = false
-	
 
+	
 func _physics_process(delta):
 	net().update_timers()
-	if net().death_frames > 1:
-		net().credit_kill()
-		visible = false
-		cancel_grab()
-		rigidbody.freeze = true
+	if net().death_frames > 0:
+		handle_death()
 		return
-	elif net().death_frames == 1:
-		respawn()
+	if net().spectator:
+		handle_spectator_mode()
 		return
 	net().update_position(rigidbody.position)
 	net().update_inputs()
@@ -60,7 +57,18 @@ func _physics_process(delta):
 
 	if not net().stun_frames > 0 and not in_move():
 		handle_input()
-
+	
+func handle_death():
+	if net().death_frames > 1:
+		net().credit_kill()
+		visible = false
+		cancel_grab()
+		rigidbody.freeze = true
+		
+	elif net().death_frames == 1:
+		respawn()
+func handle_spectator_mode():
+	visible = false
 func respawn():
 	visible = true
 	rigidbody.freeze = false
@@ -235,7 +243,10 @@ func handle_input():
 					elif net().DOWN:
 						move("air_down")
 					elif net().RIGHT or net().LEFT:
-						move("air_forward")
+						if not is_backwards():
+							move("air_backward")
+						else:
+							move("air_forward")
 					else: 
 						move("air_neutral")
 				else:
@@ -265,7 +276,6 @@ func handle_input():
 					else:
 						set_relative_velocity(Vector2(0,0))
 				elif net().JUMP:
-					
 					if GROUNDED:
 						move("move_jump",["move_forward"], true)
 					elif not net().double_jumped:
@@ -276,18 +286,16 @@ func handle_input():
 					move("move_duck")
 				elif net().LEFT != net().RIGHT:
 					net().set_dash_frames(5)
-					if (net().LEFT and not net().flipped) or (net().RIGHT and net().flipped):
+					if is_backwards() and GROUNDED:
 						net().flip()
 					move("move_forward",["move_forward","move_jump"], true)
 
-
-	
+func is_backwards():
+	return (net().LEFT and not net().flipped) or (net().RIGHT and net().flipped)
 	
 func deal_damage(damage_added, knockback: Vector2, stun_frames, cause, damage_owner, knockback_scaling = 1):
 	const PLAYER_REASONS = ["attack"]
-	
 	var damage_percent = knockback_scaling * (net().damage / 100.0) + 1
-
 	if knockback.x > 0 or knockback.y > 0:
 		leave_grab()
 	rigidbody.set_linear_velocity(knockback * damage_percent)
@@ -295,9 +303,6 @@ func deal_damage(damage_added, knockback: Vector2, stun_frames, cause, damage_ow
 	net().set_stun_frames(stun_frames)
 	if cause in PLAYER_REASONS and damage_owner != net():
 		net().set_damage_owner(damage_owner)
-	
-	
-	
 	if(damage_added > 0):
 		DAMAGED = true
 		
@@ -308,16 +313,17 @@ func set_movement_velocity(velo: Vector2):
 		velo.x /= 2
 	if current_move() == "move_forward":
 		velo.x /= 2
-	var a = lerp(rigidbody.get_linear_velocity(),Vector2(sign(scale.x), 1) * velo,0.1)
-	a.y = rigidbody.get_linear_velocity().y + velo.y
-	rigidbody.set_linear_velocity(a)
-	
+	var direction_modifier = Vector2(sign(scale.x), 1)
+	if is_backwards():
+		direction_modifier *= Vector2(-1,1)
+	print_debug(direction_modifier)
+	var calculated_velocity = lerp(rigidbody.get_linear_velocity(), direction_modifier * velo,0.1)
 
-		
+	calculated_velocity.y = rigidbody.get_linear_velocity().y + velo.y
+	rigidbody.set_linear_velocity(calculated_velocity)
 
 func set_relative_velocity(velo: Vector2):
 	velo *= rigidbody.gravity_scale
-
 	rigidbody.set_linear_velocity(Vector2(sign(scale.x), 1) * velo)
 
 func handle_during_move():

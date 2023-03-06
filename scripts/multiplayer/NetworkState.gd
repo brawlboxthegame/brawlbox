@@ -1,5 +1,6 @@
 extends Node2D
 @onready var name_tag = get_node("Name")
+@onready var room_settings = get_parent().get_node("RoomSettings")
 @onready var display_ui = get_parent().get_node("PlayerInfo/MainContainer")
 @onready var damage_percent = display_ui.get_node("DamageContainer/Percent")
 @onready var kills_box = display_ui.get_node("StatsContainer/KillsBox/Kills")
@@ -46,8 +47,8 @@ extends Node2D
 @export var kills = 0
 @export var deaths = 0
 @export var username = ""
-
-
+@export var spectator = true
+@export var stocks = -1
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	if not is_multiplayer_authority():
@@ -58,7 +59,7 @@ func _ready():
 	var user = ui.get_node("NameEntry/Name")
 	type = sel.selected
 	username = user.text
-	
+
 
 func update_inputs():
 	if not is_multiplayer_authority():
@@ -99,6 +100,7 @@ func set_i_frames(n):
 	if not is_multiplayer_authority():
 		return
 	i_frames = n
+	
 func cancel_invincibility():
 	if not is_multiplayer_authority():
 		return
@@ -153,14 +155,23 @@ func add_damage(n):
 	damage += n
 	damage_taken += n
 	if(damage > 999): 
-		damage = 0
-		death_frames = 180
-		
-		grabbing = false
-		grabbed = false
-		if damage_owner != "":
-			deaths += 1
-
+		reset_player_state()
+		if room_settings.game_active == true:
+			remove_stock()
+			
+func remove_stock():
+	stocks -= 1
+	if stocks == 0:
+		enter_spectator()
+func reset_player_state():
+	damage = 0
+	death_frames = 180
+	
+	grabbing = false
+	grabbed = false
+	flipped = false
+	if damage_owner != "":
+		deaths += 1
 	
 func flip():
 	flipped = not flipped
@@ -193,15 +204,30 @@ func get_grab_player():
 func _physics_process(delta):
 	name_tag.text = username
 	position = player_position
-
+	
 	kills_box.text = "%s"%kills
 	deaths_box.text = "%s"%deaths
 	damage_percent.text = "%s%%" % damage
 	damage_percent.modulate = Color((300.0 - damage)/100, (200.0 - damage)/100, (100.0 - damage)/100)
-	
+func enter_spectator():
+	spectator = true
+func leave_spectator():
+	display_ui.visible = true
+	spectator = false
+	reset_player_state()
+	death_frames = 30 # resets everything again
 func update_timers():
 	if not is_multiplayer_authority():
 		return
+	if room_settings.game_active == false:
+		stocks = -1
+		if spectator:
+			leave_spectator()
+	elif stocks == -1:
+		stocks = room_settings.stocks
+	else: 
+		if spectator:
+			display_ui.hidden = true
 	if dash_frames > 0:
 		dash_frames -= 1
 	if death_frames > 0:

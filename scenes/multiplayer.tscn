@@ -1,10 +1,12 @@
-[gd_scene load_steps=8 format=3 uid="uid://sdrcm5qp32t0"]
+[gd_scene load_steps=10 format=3 uid="uid://b1p2c2m08f5yl"]
 
 [ext_resource type="Script" path="res://scripts/multiplayer/MultiplayerJoin.gd" id="1_76t0h"]
 [ext_resource type="Theme" uid="uid://d2moaagkxfom6" path="res://new_theme.tres" id="2_tcair"]
 [ext_resource type="Texture2D" uid="uid://cfqtl4p7iusuj" path="res://textures/TitleLogo.png" id="3_bxbg5"]
 [ext_resource type="Script" path="res://scripts/CharacterSelect.gd" id="4_die55"]
 [ext_resource type="Script" path="res://scripts/JoinOnlineDialog.gd" id="5_0lbor"]
+[ext_resource type="Script" path="res://scripts/Owner.gd" id="6_54ghv"]
+[ext_resource type="Script" path="res://scripts/NetStartGameButton.gd" id="7_s0waw"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_prfxp"]
 
@@ -172,7 +174,25 @@ grow_horizontal = 2
 grow_vertical = 0
 theme_override_constants/h_separation = 16
 
+[node name="Owner" type="Control" parent="CanvasBox"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 257.0
+offset_bottom = 152.0
+theme = ExtResource("2_tcair")
+script = ExtResource("6_54ghv")
+
+[node name="Button" type="Button" parent="CanvasBox/Owner"]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 915.0
+offset_right = 152.0
+offset_bottom = 941.0
+text = "Start Game"
+script = ExtResource("7_s0waw")
+
 [connection signal="item_selected" from="UI/Net/CharacterSelect" to="UI/Net/CharacterSelect" method="_on_item_selected"]
 [connection signal="confirmed" from="UI/Net/JoinOnlineDialog" to="." method="_on_connect_pressed"]
 [connection signal="pressed" from="UI/Net/HostJoin/Host" to="." method="_on_host_pressed"]
 [connection signal="pressed" from="UI/Net/HostJoin/Join" to="UI/Net/JoinOnlineDialog" method="_on_host_button_pressed"]
+[connection signal="pressed" from="CanvasBox/Owner/Button" to="CanvasBox/Owner/Button" method="_on_pressed"]
