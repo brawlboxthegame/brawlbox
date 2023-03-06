@@ -175,6 +175,7 @@ grow_vertical = 0
 theme_override_constants/h_separation = 16
 
 [node name="Owner" type="Control" parent="CanvasBox"]
+visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 257.0
@@ -183,6 +184,7 @@ theme = ExtResource("2_tcair")
 script = ExtResource("6_54ghv")
 
 [node name="Button" type="Button" parent="CanvasBox/Owner"]
+visible = false
 layout_mode = 0
 offset_left = 24.0
 offset_top = 915.0

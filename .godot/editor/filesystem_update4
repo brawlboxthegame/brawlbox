@@ -17,3 +17,4 @@ res://scenes/Owner.gd
 res://scenes/NetStartGameButton.gd
 res://scripts/NetStartGameButton.gd
 res://scripts/Owner.gd
+res://scripts/attacks/Basic_Damage.gd

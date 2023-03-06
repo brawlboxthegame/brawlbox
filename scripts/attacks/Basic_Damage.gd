@@ -99,11 +99,14 @@ func summon_projectiles():
 			new.reparent(damage_player.get_parent().get_parent().get_parent())
 
 func deal_damage(body):
-	if(damage_player == null or not damage_player.is_ancestor_of(body)):
+	if damage_player.is_ancestor_of(body):
+			return
+	if damage_player == null or not damage_player.is_ancestor_of(body):
 		if damage_player == null:
 			damage_player = self
 		if charged_attack:
 			charge_frames = damage_player.net().release_charge()
+		
 		var stun_time = stun_frames
 		var forward_direction = damage_player.scale
 		if body is RigidBody2D and body.get_parent().name.contains("player"):

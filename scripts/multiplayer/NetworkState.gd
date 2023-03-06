@@ -147,8 +147,10 @@ func credit_kill():
 
 func credit_damage(n):
 	damage_given += n
+	
 func add_kill():
 	kills += 1
+	
 func add_damage(n):
 	if not is_multiplayer_authority():
 		return

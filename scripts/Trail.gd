@@ -1,5 +1,5 @@
 extends Line2D
-
+@export var points_count = 30
 var point
 @onready var tracked = get_parent()
 func _ready():
@@ -11,5 +11,5 @@ func _physics_process(delta):
 	point = tracked.global_position
 	add_point(point)
 	
-	while points.size() > 30:
+	while points.size() > points_count:
 		remove_point(0)
